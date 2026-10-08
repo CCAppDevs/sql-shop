@@ -38,10 +38,13 @@
 -- ORDER BY product_id ASC;
 
 -- 10. What are all the products that have exactly 0 in stock?
+-- SELECT * FROM products
+-- WHERE stock_quantity = 0;
 
 
 -- 11. What are all the products that are discontinued?
-
+-- SELECT * FROM products
+-- WHERE discontinued = 1;
 
 -- 12. What are all the products that are currently available and have more than 20 items in stock?
 
@@ -56,6 +59,15 @@
 
 
 -- 16. What are all the orders that were placed after February 1, 2026?
+-- 2024-01-25 01:15:05:00gmt
+-- SELECT * FROM orders
+-- WHERE 
+--     (order_date BETWEEN '2026-02-01' AND '2026-02-05'
+-- OR
+--     order_date BETWEEN '2026-02-20' AND '2026-02-25')
+-- AND
+--     customer_id BETWEEN 20 AND 29
+-- ORDER BY order_date DESC;
 
 
 -- 17. What are all the products, sorted from lowest price to highest price?
@@ -71,6 +83,13 @@
 
 
 -- 21. What are the 10 most expensive products?
+-- SELECT product_name, price FROM products
+-- ORDER BY price DESC, product_name ASC
+-- LIMIT 11;
+
+-- SELECT DISTINCT price FROM products
+-- ORDER BY price DESC, product_name ASC
+-- LIMIT 11;
 
 
 -- 22. What are the 5 least expensive products?
@@ -79,8 +98,12 @@
 -- 23. What are the 10 products with the most items in stock?
 
 
--- 24. What are the 5 most recently placed orders?
+-- 24. What are the names of the products in the 5 most recently placed orders?
+-- SELECT * FROM orders
+-- INNER JOIN order_items ON orders.order_id = order_items.order_id
+-- ORDER BY order_date DESC;
 
+-- SELECT * FROM products limit 10;
 
 -- 25. What are the 5 earliest orders in the database?
 
@@ -158,3 +181,104 @@
 
 
 -- 50. What are the names and prices of the 10 cheapest products that are either monitors or keyboards?
+
+
+-- Joins Exercises
+
+-- INNER JOIN
+
+-- 51. I want to know all orders and their customers
+
+-- SELECT * FROM orders
+-- INNER JOIN customers
+-- ON orders.customer_id = customers.customer_id;
+
+-- 52. I want to know all customers and their orders, sorted by customer_id
+
+-- SELECT * FROM orders
+-- INNER JOIN customers
+-- ON orders.customer_id = customers.customer_id
+-- ORDER BY orders.customer_id ASC;
+
+-- INSERT INTO customers (
+--     customer_id,
+--     first_name,
+--     last_name,
+--     email,
+--     city,
+--     state
+-- ) VALUES (
+--     31, 'Jesse', 'Harlan', 'jesse@jesse.com', 'Centralia', 'WA'
+-- );
+
+
+-- 53. Which customers have 0 orders?
+-- SELECT first_name, last_name FROM customers
+-- LEFT JOIN orders ON customers.customer_id = orders.customer_id
+-- WHERE orders.order_id IS NULL;
+
+-- 54. I want to know all customers and all orders and I need 
+-- it if they have no orders or the order has no customer
+
+-- SELECT * FROM customers
+-- FULL OUTER JOIN orders
+-- ON customers.customer_id = orders.order_id;
+
+-- 55. I want to know how many orders we have per customer?
+-- SELECT count(*), * FROM orders
+-- INNER JOIN customers ON customers.customer_id = orders.customer_id
+-- GROUP BY customers.customer_id;
+
+-- SELECT COUNT(*), * FROM customers
+-- LEFT JOIN orders ON customers.customer_id = orders.customer_id
+-- GROUP BY customers.customer_id
+-- HAVING orders.order_id IS NOT NULL;
+
+
+-- SELECT COUNT(*), * FROM customers
+-- LEFT JOIN orders ON customers.customer_id = orders.customer_id
+-- WHERE customers.customer_id > 10
+-- GROUP BY customers.customer_id
+-- HAVING orders.order_id IS NOT NULL;
+
+-- SELECT COUNT(*) as num_orders, * FROM customers
+-- LEFT JOIN orders ON customers.customer_id = orders.customer_id
+-- GROUP BY customers.customer_id
+-- HAVING num_orders < 2;
+
+
+
+
+-- I want to know how much money each customer has spent 
+-- over their lifetime and sort it from highest to lowest.
+
+-- TABLES: customers, orders, order_items 
+
+-- COLUMNS: first_name, last_name, qty, price
+
+-- SORT HIGH TO LOW
+
+--SELECT name FROM sqlite_master WHERE type='table';
+
+-- SELECT
+--     customers.first_name,
+--     customers.last_name,
+--     SUM(order_items.unit_price * order_items.quantity) AS lifetime_spent
+-- FROM customers
+-- LEFT JOIN orders ON customers.customer_id = orders.customer_id
+-- LEFT JOIN order_items ON orders.order_id = order_items.order_id
+-- GROUP BY customers.customer_id
+-- ORDER BY lifetime_spent DESC;
+
+-- 844.94 @ Maria Bennett
+
+-- same three tables
+
+-- I want to know what the average expenditure of all customers is.
+
+SELECT
+    *,
+    AVG(order_items.unit_price * order_items.quantity) AS average_spent
+FROM customers
+LEFT JOIN orders ON customers.customer_id = orders.customer_id
+LEFT JOIN order_items ON orders.order_id = order_items.order_id;
