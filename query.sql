@@ -275,10 +275,21 @@
 -- same three tables
 
 -- I want to know what the average expenditure of all customers is.
+-- SELECT
+--     *,
+--     AVG(order_items.unit_price * order_items.quantity) AS average_spent
+-- FROM customers
+-- LEFT JOIN orders ON customers.customer_id = orders.customer_id
+-- LEFT JOIN order_items ON orders.order_id = order_items.order_id;
 
-SELECT
-    *,
-    AVG(order_items.unit_price * order_items.quantity) AS average_spent
-FROM customers
-LEFT JOIN orders ON customers.customer_id = orders.customer_id
-LEFT JOIN order_items ON orders.order_id = order_items.order_id;
+-- how many rows are in each table?
+SELECT 'categories' AS table_name, COUNT(*) AS row_count FROM categories
+UNION ALL
+SELECT 'products', COUNT(*) FROM products
+UNION ALL
+SELECT 'customers', COUNT(*) FROM customers
+UNION ALL
+SELECT 'orders', COUNT(*) FROM orders
+UNION ALL
+SELECT 'order_items', COUNT(*) FROM order_items
+ORDER BY row_count DESC;
