@@ -35,6 +35,36 @@ CREATE TABLE genres (
 );
 
 -- insert seed data
+INSERT INTO genres (name) VALUES
+('Action'),
+('Adventure'),
+('Role-Playing'),
+('Simulation'),
+('Strategy'),
+('Sports'),
+('Puzzle');
+
+INSERT INTO games (
+    name,
+    platform,
+    release_date,
+    description,
+    developer,
+    publisher,
+    image,
+    features
+) VALUES
+('World of Warcraft: Forever', 'PC', '2026-10-04', 'Massive Multiplayer RPG with 25 years of history', 'Blizzard Entertainment', 'Blizzard Entertainment', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTX574KH-MCoUr9ECT-Ls-j8ahsKmBhdFOFPDmBIb1eGw&s=10', 'Multiplayer, Online, Fantasy, Open World, PVP'),
+('The Legend of Zelda: Tears of the Kingdom', 'Nintendo Switch', '2023-05-12', 'The Legend of Zelda: Tears of the Kingdom is an action-adventure game developed and published by Nintendo for the Nintendo Switch.', 'Nintendo EPD', 'Nintendo', 'https://upload.wikimedia.org/wikipedia/en/0/0b/The_Legend_of_Zelda_Tears_of_the_Kingdom.jpg', 'Action, Adventure, Open World, Fantasy, Exploration'),
+('Elden Ring', 'PC, PS4, PS5, Xbox One, Xbox Series X/S', '2022-02-25', 'Elden Ring is an action role-playing game developed by FromSoftware and published by Bandai Namco Entertainment. It is directed by Hidetaka Miyazaki with worldbuilding provided by fantasy writer George R. R. Martin.', 'FromSoftware', 'Bandai Namco Entertainment', 'https://upload.wikimedia.org/wikipedia/en/8/8e/Elden_Ring_cover_art.jpg', 'Action RPG, Open World, Fantasy, Exploration, Combat');
+
+-- INSERT INTO game_genres (game_id, genre_id) VALUES
+-- (),
+-- ();
+
 
 -- TEST THIS DATABASE
+SELECT * FROM genres;
+SELECT * FROM game_genres;
 SELECT * FROM games;
+
